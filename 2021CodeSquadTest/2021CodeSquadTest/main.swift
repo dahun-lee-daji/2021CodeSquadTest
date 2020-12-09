@@ -16,7 +16,9 @@ while (true){
     print("입력하시오 종료하려면 Q를 입력하시오")
     let inputMessage = readLine()
     var splitedMessage = [String]()
+    var inputWord = String()
     var movingCount = Int()
+    var mode = String()
     var resultMessage = String()
     
     if checkQuitMessage(inputMessage) == true {
@@ -28,28 +30,30 @@ while (true){
         print("입력에 문제가 있습니다.")
         continue
     }
+    inputWord = splitedMessage[0]
     movingCount = createMovingCount(splitedMessage[1]) // 입력값의 무빙카운트 String -> Int 형 변환 하여 저장
-    
     movingCount = calculateMovingCount(sentenceLength: splitedMessage[0].count, movingCount: movingCount) // 현재 단어의 길이와 입력된 무빙카운트를 계산하여 다시 저장.
+    mode = splitedMessage[2].uppercased()
     
-    switch splitedMessage[2].uppercased() {
+    
+    switch mode {
     case "R":
-        resultMessage = movingRight(inputSentence: splitedMessage[0], movingCount : movingCount)
+        resultMessage = movingRight(inputWord, movingCount)
     case "L":
-        resultMessage = movingLeft(inputSentence: splitedMessage[0], movingCount : movingCount)
+        resultMessage = movingLeft(inputWord, movingCount)
     default:
         print("모드 오류, R,L을 3번째 명령어를 R(r), L(l)로 입력하시오")
     }
     print(resultMessage)
 }
-func movingRight(inputSentence : String, movingCount : Int) -> String {
+func movingRight(_ inputSentence : String, _ movingCount : Int) -> String {
     var item = String()
     let boundaryIndex = inputSentence.index(inputSentence.endIndex, offsetBy: -movingCount)
     item = inputSentence.substring(from:  boundaryIndex) + inputSentence.substring(to: boundaryIndex)
     return item
 }
 
-func movingLeft(inputSentence : String, movingCount : Int) -> String {
+func movingLeft(_ inputSentence : String, _ movingCount : Int) -> String {
     var item = String()
     let boundaryIndex = inputSentence.index(inputSentence.startIndex, offsetBy: movingCount)
     item = inputSentence.substring(from:  boundaryIndex) + inputSentence.substring(to: boundaryIndex)

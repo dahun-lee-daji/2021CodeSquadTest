@@ -32,7 +32,7 @@ while (true){
     }
     inputWord = splitedMessage[0]
     movingCount = createMovingCount(splitedMessage[1]) // 입력값의 무빙카운트 String -> Int 형 변환 하여 저장
-    movingCount = calculateMovingCount(sentenceLength: splitedMessage[0].count, movingCount: movingCount) // 현재 단어의 길이와 입력된 무빙카운트를 계산하여 다시 저장.
+    movingCount = calculateMovingCount(inputWord.count, movingCount) // 현재 단어의 길이와 입력된 무빙카운트를 계산하여 다시 저장.
     mode = splitedMessage[2].uppercased()
     
     
@@ -61,7 +61,7 @@ func movingLeft(_ inputSentence : String, _ movingCount : Int) -> String {
 }
 
 
-func calculateMovingCount(sentenceLength : Int, movingCount : Int) -> Int {
+func calculateMovingCount(_ sentenceLength : Int, _ movingCount : Int) -> Int {
     var item = Int()
     if sentenceLength <= movingCount {
         item = movingCount % sentenceLength

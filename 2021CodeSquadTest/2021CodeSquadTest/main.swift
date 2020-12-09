@@ -17,6 +17,7 @@ while (true){
     let inputMessage = readLine()
     var splitedMessage = [String]()
     var movingCount = Int()
+    var resultMessage = String()
     
     if checkQuitMessage(inputMessage) == true {
         break
@@ -29,30 +30,42 @@ while (true){
     }
     movingCount = createMovingCount(splitedMessage[1]) // 입력값의 무빙카운트 String -> Int 형 변환 하여 저장
     
-    movingCount = calculateMovingCount(sentenceLength: splitedMessage[0].count, MovingCount: movingCount) // 현재 단어의 길이와 입력된 무빙카운트를 계산하여 다시 저장.
+    movingCount = calculateMovingCount(sentenceLength: splitedMessage[0].count, movingCount: movingCount) // 현재 단어의 길이와 입력된 무빙카운트를 계산하여 다시 저장.
     
-    switch splitedMessage[2] {
+    switch splitedMessage[2].uppercased() {
     case "R":
-        <#code#>
+        resultMessage = movingRight(inputSentence: splitedMessage[0], movingCount : movingCount)
     case "L":
-        <#code#>
+        resultMessage = movingLeft(inputSentence: splitedMessage[0], movingCount : movingCount)
     default:
         print("모드 오류, R,L을 3번째 명령어를 R(r), L(l)로 입력하시오")
     }
-    
-    // 단어 길이보다 N이 크다면 % 하여 나머지를 사용
-    // apple 을 우측 2 면, le app 임, string 몇번째에서 잘라쓰는 함수 사용
-    // 방향을 받아서 모드 나누기.
+    print(resultMessage)
+}
+func movingRight(inputSentence : String, movingCount : Int) -> String {
+    var item = String()
+    let boundaryIndex = inputSentence.index(inputSentence.endIndex, offsetBy: -movingCount)
+    item = inputSentence.substring(from:  boundaryIndex) + inputSentence.substring(to: boundaryIndex)
+    return item
 }
 
-func calculateMovingCount(sentenceLength : Int, MovingCount : Int) -> Int {
+func movingLeft(inputSentence : String, movingCount : Int) -> String {
+    var item = String()
+    let boundaryIndex = inputSentence.index(inputSentence.startIndex, offsetBy: movingCount)
+    item = inputSentence.substring(from:  boundaryIndex) + inputSentence.substring(to: boundaryIndex)
+    return item
+}
+
+
+func calculateMovingCount(sentenceLength : Int, movingCount : Int) -> Int {
     var item = Int()
-    if sentenceLength >= MovingCount {
-        item = sentenceLength % MovingCount
+    if sentenceLength <= movingCount {
+        item = movingCount % sentenceLength
     }
     else {
-        item = MovingCount
+        item = movingCount
     }
+    print("MovingCount: \(item)")
     return item
 }
 
@@ -77,7 +90,7 @@ func createSplitMessage(_ input : Optional<String>) -> [String] {
 
 func checkQuitMessage(_ input : Optional<String>) -> Bool {
     if let inputMessage = input {
-        if inputMessage == "Q" {
+        if inputMessage.uppercased() == "Q" {
             return true
         }
     }

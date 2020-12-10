@@ -27,17 +27,82 @@ struct Cube2D {
     var topSide : [String]
     var middleSide : [String]
     var bottomSide : [String]
+    
     init() {
         topSide = ["R","R","W"]
         middleSide = ["G","C","W"]
         bottomSide = ["G","B","B"]
     }
+    
+    func printCube() {
+        print("\(topSide[0]) \(topSide[1]) \(topSide[2]) ")
+        print("\(middleSide[0]) \(middleSide[1]) \(middleSide[2]) ")
+        print("\(bottomSide[0]) \(bottomSide[1]) \(bottomSide[2]) ")
+    }
+    
+    
 }
 
 var currentCube = Cube2D.init()
-print(currentCube)
+currentCube.printCube()
 
 while(true) {
+    print(" CUBE> ",terminator :"")
+    let inputOptionalMessage = readLine()
+    let inputStringMessage = doOptionalBinding(inputOptionalMessage)
+    var dicedMessage = doIndiceString(inputStringMessage)
+    dicedMessage = doCommaCombination(dicedMessage)
     
+    doCommands(dicedMessage,currentCube)
+}
+
+func doCommands(_ commands : [String], _ cube : Cube2D) {
+    for i in 0..<commands.count {
+        switch commands[i] {
+        case <#pattern#>:
+            <#code#>
+        default:
+            print("잘못된 명령어 입니다, 입력된 명령 : \(commands[i])")
+        }
+    }
+}
+
+func doOptionalBinding(_ input : Optional<String>) -> String {
+    var item = String()
+    if let inputMessage = input?.uppercased() {
+        item = inputMessage
+    } else {
+        print("입력 값 오류")
+    }
+    print("doOptionalBinding : \(item)")
+    return item
+}
+
+func doIndiceString(_ input : String) -> [String] {
+    var item = [String]()
+    for i in input.indices {
+        item.append(String(input[i]))
+    }
+    print("doIndiceString : \(item)")
+    return item
+}
+
+func doCommaCombination(_ input : [String]) -> [String] {
+    var item = [String]()
+    for i in 0..<input.count {
+        if input[i] == "\'" {
+            if i == 0 {
+                print("명령의 첫번째가 '이므로 이를 삭제합니다.")
+                continue
+            } else {
+            item[i-1] = "\(item[i-1])'"
+            }
+        }
+        else {
+        item.append(input[i])
+        }
+    }
+    print("commacombiantion : \(item)")
+    return item
 }
 

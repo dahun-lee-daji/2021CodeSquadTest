@@ -5,22 +5,6 @@
 //  Created by 이다훈 on 2020/12/07.
 //
 
-/*
- U  가장 윗줄을 왼쪽으로 한 칸 밀기 RRW -> RWR
- > U' 가장 윗줄을 오른쪽으로 한 칸 밀기 RRW -> WRR
- > R  가장 오른쪽 줄을 위로 한 칸 밀기 WWB -> WBW
- > R' 가장 오른쪽 줄을 아래로 한 칸 밀기 WWB -> BWW
- > L  가장 왼쪽 줄을 아래로 한 칸 밀기 RGG -> GRG (L의 경우 R과 방향이 반대임을 주의한다.)
- > L' 가장 왼쪽 줄을 위로 한 칸 밀기 RGG -> GGR
- > B  가장 아랫줄을 오른쪽으로 한 칸 밀기 GBB -> BGB (B의 경우도 U와 방향이 반대임을 주의한다.)
- > B' 가장 아랫줄을 왼쪽으로 한 칸 밀기 GBB -> BBG
- > Q  Bye~를 출력하고 프로그램을 종료한다.
- 
- 처음 시작하면 초기 상태를 출력한다.
- 간단한 프롬프트 (CLI에서 키보드 입력받기 전에 표시해주는 간단한 글자들 - 예: CUBE> )를 표시해 준다.
- 한 번에 여러 문자를 입력받은 경우 순서대로 처리해서 매 과정을 화면에 출력한다.
-*/
-
 import Foundation
 
 struct Cube2D {
@@ -37,9 +21,87 @@ struct Cube2D {
     func printCube() {
         print("\(topSide[0]) \(topSide[1]) \(topSide[2]) ")
         print("\(middleSide[0]) \(middleSide[1]) \(middleSide[2]) ")
-        print("\(bottomSide[0]) \(bottomSide[1]) \(bottomSide[2]) ")
+        print("\(bottomSide[0]) \(bottomSide[1]) \(bottomSide[2]) ", terminator :"\n\n")
     }
     
+    mutating func topSideMovingLeft() {
+        let cellsToMove = "\(topSide[0])\(topSide[1])\(topSide[2])"
+        topSide = doIndiceString(movingCellsLeft(cellsToMove, 1))
+    }
+    
+    mutating func topSideMovingRight() {
+        let cellsToMove = "\(topSide[0])\(topSide[1])\(topSide[2])"
+        topSide = doIndiceString(movingCellsRight(cellsToMove, 1))
+    }
+    
+    mutating func bottomSideMovingLeft() {
+            let cellsToMove = "\(bottomSide[0])\(bottomSide[1])\(bottomSide[2])"
+        bottomSide = doIndiceString(movingCellsLeft(cellsToMove, 1))
+    }
+    
+    mutating func bottomSideMovingRight() {
+            let cellsToMove = "\(bottomSide[0])\(bottomSide[1])\(bottomSide[2])"
+        bottomSide = doIndiceString(movingCellsRight(cellsToMove, 1))
+    }
+    
+    mutating func leftSideMovingUp() {
+        let cellsToMove = "\(topSide[0])\(middleSide[0])\(bottomSide[0])"
+        let afterCellsMove = doIndiceString(movingCellsLeft(cellsToMove, 1))
+        topSide[0] = afterCellsMove[0]
+        middleSide[0] = afterCellsMove[1]
+        bottomSide[0] = afterCellsMove[2]
+    }
+    
+    mutating func leftSideMovingDown() {
+        let cellsToMove = "\(topSide[0])\(middleSide[0])\(bottomSide[0])"
+        let afterCellsMove = doIndiceString(movingCellsRight(cellsToMove, 1))
+        topSide[0] = afterCellsMove[0]
+        middleSide[0] = afterCellsMove[1]
+        bottomSide[0] = afterCellsMove[2]
+        
+    }
+    
+    mutating func rightSideMovingUp() {
+        let cellsToMove = "\(topSide[2])\(middleSide[2])\(bottomSide[2])"
+        let afterCellsMove = doIndiceString(movingCellsLeft(cellsToMove, 1))
+        topSide[2] = afterCellsMove[0]
+        middleSide[2] = afterCellsMove[1]
+        bottomSide[2] = afterCellsMove[2]
+        
+    }
+    
+    mutating func rightSideMovingDown() {
+        let cellsToMove = "\(topSide[2])\(middleSide[2])\(bottomSide[2])"
+        let afterCellsMove = doIndiceString(movingCellsRight(cellsToMove, 1))
+        topSide[2] = afterCellsMove[0]
+        middleSide[2] = afterCellsMove[1]
+        bottomSide[2] = afterCellsMove[2]
+        
+    }
+    
+    
+    func movingCellsRight(_ inputSentence : String, _ movingCount : Int) -> String {
+        var item = String()
+        let boundaryIndex = inputSentence.index(inputSentence.endIndex, offsetBy: -movingCount)
+        item = inputSentence.substring(from:  boundaryIndex) + inputSentence.substring(to: boundaryIndex)
+        return item
+    }
+
+    func movingCellsLeft(_ inputSentence : String, _ movingCount : Int) -> String {
+        var item = String()
+        let boundaryIndex = inputSentence.index(inputSentence.startIndex, offsetBy: movingCount)
+        item = inputSentence.substring(from:  boundaryIndex) + inputSentence.substring(to: boundaryIndex)
+        return item
+    }
+    
+    
+    func doIndiceString(_ input : String) -> [String] {
+        var item = [String]()
+        for i in input.indices {
+            item.append(String(input[i]))
+        }
+        return item
+    }
     
 }
 
@@ -53,18 +115,55 @@ while(true) {
     var dicedMessage = doIndiceString(inputStringMessage)
     dicedMessage = doCommaCombination(dicedMessage)
     
-    doCommands(dicedMessage,currentCube)
+    if doCommands(dicedMessage,currentCube) {
+        break
+    }
 }
 
-func doCommands(_ commands : [String], _ cube : Cube2D) {
+func doCommands(_ commands : [String], _ cube : Cube2D) -> Bool {
+    var exitFlag = false
     for i in 0..<commands.count {
         switch commands[i] {
-        case <#pattern#>:
-            <#code#>
+        case "U":
+            print(commands[i])
+            currentCube.topSideMovingLeft()
+            currentCube.printCube()
+        case "U'":
+            print(commands[i])
+            currentCube.topSideMovingRight()
+            currentCube.printCube()
+        case "R":
+            print(commands[i])
+            currentCube.rightSideMovingUp()
+            currentCube.printCube()
+        case "R'":
+            print(commands[i])
+            currentCube.rightSideMovingDown()
+            currentCube.printCube()
+        case "B":
+            print(commands[i])
+            currentCube.bottomSideMovingRight()
+            currentCube.printCube()
+        case "B'":
+            print(commands[i])
+            currentCube.bottomSideMovingLeft()
+            currentCube.printCube()
+        case "L":
+            print(commands[i])
+            currentCube.leftSideMovingDown()
+            currentCube.printCube()
+        case "L'":
+            print(commands[i])
+            currentCube.leftSideMovingUp()
+            currentCube.printCube()
+        case "Q":
+            print("bye")
+            exitFlag = true
         default:
             print("잘못된 명령어 입니다, 입력된 명령 : \(commands[i])")
         }
     }
+    return exitFlag
 }
 
 func doOptionalBinding(_ input : Optional<String>) -> String {
@@ -74,7 +173,6 @@ func doOptionalBinding(_ input : Optional<String>) -> String {
     } else {
         print("입력 값 오류")
     }
-    print("doOptionalBinding : \(item)")
     return item
 }
 
@@ -83,7 +181,6 @@ func doIndiceString(_ input : String) -> [String] {
     for i in input.indices {
         item.append(String(input[i]))
     }
-    print("doIndiceString : \(item)")
     return item
 }
 
@@ -102,7 +199,6 @@ func doCommaCombination(_ input : [String]) -> [String] {
         item.append(input[i])
         }
     }
-    print("commacombiantion : \(item)")
     return item
 }
 

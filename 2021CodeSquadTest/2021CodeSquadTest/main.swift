@@ -7,7 +7,6 @@
 
 import Foundation
 
-print("해당 작동은 1회 진행됨, 반복 실행을 위해서 재 작동 시킬 것")
 print("단어(space)N(space)방향, EX) banana 3 R 을 입력할 것")
 print("단어 내 띄어쓰기 불가, -100<=N<100, 방향 : R, L")
 print("한글의 경우 자음 모음이 분리됨")
@@ -30,10 +29,18 @@ while (true){
         print("입력에 문제가 있습니다.")
         continue
     }
+    
     inputWord = splitedMessage[0]
-    movingCount = createMovingCount(splitedMessage[1]) // 입력값의 무빙카운트 String -> Int 형 변환 하여 저장
-    movingCount = calculateMovingCount(inputWord.count, movingCount) // 현재 단어의 길이와 입력된 무빙카운트를 계산하여 다시 저장.
-    mode = splitedMessage[2].uppercased()
+    movingCount = createMovingCount(splitedMessage[1])
+    
+    if movingCount<0 {
+        mode = splitedMessage[2].uppercased() == "R" ? "L" : "R"
+        movingCount = -movingCount
+    } else {
+        mode = splitedMessage[2].uppercased()
+    }
+    
+    movingCount = calculateMovingCount(inputWord.count, movingCount)
     
     
     switch mode {
@@ -46,6 +53,7 @@ while (true){
     }
     print(resultMessage)
 }
+
 func movingRight(_ inputSentence : String, _ movingCount : Int) -> String {
     var item = String()
     let boundaryIndex = inputSentence.index(inputSentence.endIndex, offsetBy: -movingCount)
@@ -69,7 +77,6 @@ func calculateMovingCount(_ sentenceLength : Int, _ movingCount : Int) -> Int {
     else {
         item = movingCount
     }
-    print("MovingCount: \(item)")
     return item
 }
 
@@ -105,10 +112,10 @@ func checkMessageSuited(_ input : [String]) ->Bool {
     if checkingMessageLength(input.count) == false {
         return false
     }
-    if checkingMeesageNumber(input[1]) == false {
+    if checkingMesageNumber(input[1]) == false {
         return false
     }
-    if checkingMeesageDirection(input[2]) == false {
+    if checkingMesageDirection(input[2]) == false {
         return false
     }
     return true
@@ -118,14 +125,12 @@ func checkMessageSuited(_ input : [String]) ->Bool {
 
 func checkingMessageLength(_ input : Int) ->Bool {
     if input == 3 {
-        print("MessageLength : \(input) ")
         return true
     }
     return false
 }
 
-func checkingMeesageNumber(_ input : String) ->Bool {
-    print("MessageNumber : \(input) ")
+func checkingMesageNumber(_ input : String) ->Bool {
     if let integerInput = Int(input) {
         
         if Int(integerInput) >= -100 && Int(integerInput) < 100 {
@@ -135,8 +140,7 @@ func checkingMeesageNumber(_ input : String) ->Bool {
     return false
 }
 
-func checkingMeesageDirection(_ input : String) ->Bool {
-    print("MessageDirection : \(input) ")
+func checkingMesageDirection(_ input : String) ->Bool {
     let uppercasedInput = input.uppercased()
     if uppercasedInput == "R" || uppercasedInput == "L" {
         return true

@@ -11,11 +11,13 @@
 ## 코드에 대한 설명 :  
 변수 선언과 할당 같은 설명이 필수적이지 않을 경우 설명을 누락한 부분이 있습니다.
 A. readLine() 을 통해 명령어를 입력.
-    
+
+    swift
     let inputMessage = readLine()
 
 B. 입력 메세지와 checkQuitMessage(_ input : Optional<String>) 함수를 사용. 옵셔널 바인딩하고, .uppercased() 메서드적용하여, "Q" 인지 확인.
     
+    swift
     if checkQuitMessage(inputMessage) == true {
         break
     }
@@ -31,6 +33,7 @@ B. 입력 메세지와 checkQuitMessage(_ input : Optional<String>) 함수를 �
 
 C. 입력 메세지와  createSplitMessage(_ input : Optional<String>) 함수를 사용, 공백문자로 분리하여 문자열 배열로 반환
 
+    swift
     splitedMessage = createSplitMessage(inputMessage)
     
     func createSplitMessage(_ input : Optional<String>) -> [String] {
@@ -51,6 +54,7 @@ D.  분리된 메세지가 실행 조건에 맞는지 확인.
     2. 입력된 숫자가 -100 <= N <100의 범위에 있으며, Int형이 맞는가? 
     3. 입력된 방향이 R, L 인가? 
 
+    swift
     if checkMessageSuited(splitedMessage) == false {
     print("입력에 문제가 있습니다.")
     continue
@@ -67,17 +71,15 @@ D.  분리된 메세지가 실행 조건에 맞는지 확인.
             return false
         }
         return true
-        
-        
     }
-
+    
     func checkingMessageLength(_ input : Int) ->Bool {
         if input == 3 {
             return true
         }
         return false
     }
-
+    
     func checkingMesageNumber(_ input : String) ->Bool {
         if let integerInput = Int(input) {
             
@@ -87,7 +89,7 @@ D.  분리된 메세지가 실행 조건에 맞는지 확인.
         }
         return false
     }
-
+    
     func checkingMesageDirection(_ input : String) ->Bool {
         let uppercasedInput = input.uppercased()
         if uppercasedInput == "R" || uppercasedInput == "L" {
@@ -98,6 +100,7 @@ D.  분리된 메세지가 실행 조건에 맞는지 확인.
 
 E.  입력값의 밀어낼 횟수를 String -> Int 형 변환 하여 저장
 
+    swift
     movingCount = createMovingCount(splitedMessage[1])
     
     func createMovingCount(_ input: String) -> Int {
@@ -111,6 +114,7 @@ E.  입력값의 밀어낼 횟수를 String -> Int 형 변환 하여 저장
 
 F.  밀어낼 횟수가 음수일 경우, 명령어의 방향과 반대로 밀어낼 것 이므로, 방향을 반대로 변경하고, 음수를 양수로 바꿔줍니다.
 
+    swift
     if movingCount<0 {
     mode = splitedMessage[2].uppercased() == "R" ? "L" : "R"
     movingCount = -movingCount
@@ -120,6 +124,7 @@ F.  밀어낼 횟수가 음수일 경우, 명령어의 방향과 반대로 밀�
 
 E.  현재 입력된 단어보다 밀어낼 횟수가 더 큰 경우 나머지연산을 통해 밀어낼 횟수를 단어 길이보다 작게 만듭니다.
 
+    swift
     movingCount = calculateMovingCount(inputWord.count, movingCount)
     
     func calculateMovingCount(_ sentenceLength : Int, _ movingCount : Int) -> Int {
@@ -135,6 +140,7 @@ E.  현재 입력된 단어보다 밀어낼 횟수가 더 큰 경우 나머지�
 
 F. 방향 값에 따라 다른 함수를 실행합니다. 이동할 방향에 따라 잘라낼 Index를 boundaryIndex로 할당하고 해당 위치를 잘라내어 두 개의 SubString으로 변환, 이를 앞뒤를 바꾸어 병합하여 반환합니다.
 
+    swift
     switch mode {
     case "R":
         resultMessage = movingRight(inputWord, movingCount)

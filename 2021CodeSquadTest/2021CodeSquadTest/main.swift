@@ -7,12 +7,8 @@
 
 import Foundation
 
-print("단어(space)N(space)방향, EX) banana 3 R 을 입력할 것")
-print("단어 내 띄어쓰기 불가, -100<=N<100, 방향 : R, L")
-print("한글의 경우 자음 모음이 분리됨")
-
 while (true){
-    print("입력하시오 종료하려면 Q를 입력하시오")
+    print("명령어를 입력하시오. 종료하려면 Q를 입력하시오")
     let inputMessage = readLine()
     var splitedMessage = [String]()
     var inputWord = String()

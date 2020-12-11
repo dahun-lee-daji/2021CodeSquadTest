@@ -192,7 +192,7 @@ func doCommaCombination(_ input : [String]) -> [String] {
                 print("명령의 첫번째가 '이므로 이를 삭제합니다.")
                 continue
             } else {
-                item[item.endIndex-1] = "\(item[item.endIndex-1])'"
+                item[item.count-1] = "\(item[item.count-1])'"
             }
         }
         else {

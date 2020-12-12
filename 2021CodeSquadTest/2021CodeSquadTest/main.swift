@@ -166,7 +166,7 @@ struct Cube3D {
         cubeSides[Cube3D.NumberingSides.bottom.rawValue].print2DCube(frontSpacing: 15)
     }
     
-    mutating func turnRight(target : NumberingSides) {
+    mutating func turnClockwise(target : NumberingSides) {
         moves += 1
         switch target {
         case .front:
@@ -187,9 +187,34 @@ struct Cube3D {
         case .right:
             setRightMovedRow(target: target)
             cubeSides[target.rawValue].turnRight()
-        
         default:
-            print("Error: 잘못된 입력 in turnRight()", self)
+            print("Error: 잘못된 입력 in turnClockwise()", self)
+        }
+    }
+    
+    mutating func turnCounterClockwise(target : NumberingSides) {
+        moves += 1
+        switch target {
+        case .front:
+            setLeftMovedRow(target: target)
+            cubeSides[target.rawValue].turnLeft()
+        case .back:
+            setRightMovedRow(target: target)
+            cubeSides[target.rawValue].turnRight()
+        case .upper:
+            setLeftMovedRow(target: target)
+            cubeSides[target.rawValue].turnLeft()
+        case .bottom:
+            setRightMovedRow(target: target)
+            cubeSides[target.rawValue].turnRight()
+        case .left:
+            setRightMovedRow(target: target)
+            cubeSides[target.rawValue].turnRight()
+        case .right:
+            setLeftMovedRow(target: target)
+            cubeSides[target.rawValue].turnLeft()
+        default:
+            print("Error: 잘못된 입력 in turnClockwise()", self)
         }
     }
     
@@ -211,6 +236,32 @@ struct Cube3D {
             cubeSides[side.upper()].setRow(input: indicedMovedRow[3...5], rowOrder: 0)
             cubeSides[side.right()].setColumn(input: indicedMovedRow[6...8], columnOrder: 2)
             cubeSides[side.bottom()].setRow(input: indicedMovedRow[9...11], rowOrder: 2)
+        case .right:
+            movingRow = cubeSides[side.front()].getIndicedColumn(columnOrder: 2, direction: false).joined() + cubeSides[side.upper()].getIndicedColumn(columnOrder: 2, direction: false).joined() + cubeSides[side.back()].getIndicedColumn(columnOrder: 0, direction: true).joined() + cubeSides[side.bottom()].getIndicedColumn(columnOrder: 2, direction: false).joined()
+            indicedMovedRow = doIndiceString(movingCellsRight(movingRow, 3))
+            cubeSides[side.front()].setColumn(input: indicedMovedRow[0...2], columnOrder: 2)
+            cubeSides[side.upper()].setColumn(input: indicedMovedRow[3...5], columnOrder: 2)
+            cubeSides[side.back()].setColumn(input: indicedMovedRow[6...8], columnOrder: 0)
+            cubeSides[side.bottom()].setColumn(input: indicedMovedRow[9...11], columnOrder: 2)
+        case .left:
+            movingRow = cubeSides[side.front()].getIndicedColumn(columnOrder: 0, direction: false).joined() + cubeSides[side.upper()].getIndicedColumn(columnOrder: 0, direction: false).joined() + cubeSides[side.back()].getIndicedColumn(columnOrder: 2, direction: true).joined() + cubeSides[side.bottom()].getIndicedColumn(columnOrder: 0, direction: false).joined()
+            indicedMovedRow = doIndiceString(movingCellsRight(movingRow, 3))
+            cubeSides[side.front()].setColumn(input: indicedMovedRow[0...2], columnOrder: 0)
+            cubeSides[side.upper()].setColumn(input: indicedMovedRow[3...5], columnOrder: 0)
+            cubeSides[side.back()].setColumn(input: indicedMovedRow[6...8], columnOrder: 2)
+            cubeSides[side.bottom()].setColumn(input: indicedMovedRow[9...11], columnOrder: 0)
+        case .upper:
+            let tempRow = cubeSides[side.front()].topLayer
+            cubeSides[side.front()].topLayer = cubeSides[side.right()].topLayer
+            cubeSides[side.right()].topLayer = cubeSides[side.back()].topLayer
+            cubeSides[side.back()].topLayer = cubeSides[side.left()].topLayer
+            cubeSides[side.left()].topLayer = tempRow
+        case .bottom:
+            let tempRow = cubeSides[side.front()].bottomLayer
+            cubeSides[side.front()].bottomLayer = cubeSides[side.right()].bottomLayer
+            cubeSides[side.right()].bottomLayer = cubeSides[side.back()].bottomLayer
+            cubeSides[side.back()].bottomLayer = cubeSides[side.left()].bottomLayer
+            cubeSides[side.left()].bottomLayer = tempRow
         default:
             ""
         }
@@ -234,6 +285,32 @@ struct Cube3D {
             cubeSides[side.upper()].setRow(input: indicedMovedRow[3...5], rowOrder: 0)
             cubeSides[side.right()].setColumn(input: indicedMovedRow[6...8], columnOrder: 2)
             cubeSides[side.bottom()].setRow(input: indicedMovedRow[9...11], rowOrder: 2)
+        case .right:
+            movingRow = cubeSides[side.front()].getIndicedColumn(columnOrder: 2, direction: false).joined() + cubeSides[side.upper()].getIndicedColumn(columnOrder: 2, direction: false).joined() + cubeSides[side.back()].getIndicedColumn(columnOrder: 0, direction: true).joined() + cubeSides[side.bottom()].getIndicedColumn(columnOrder: 2, direction: false).joined()
+            indicedMovedRow = doIndiceString(movingCellsLeft(movingRow, 3))
+            cubeSides[side.front()].setColumn(input: indicedMovedRow[0...2], columnOrder: 2)
+            cubeSides[side.upper()].setColumn(input: indicedMovedRow[3...5], columnOrder: 2)
+            cubeSides[side.back()].setColumn(input: indicedMovedRow[6...8], columnOrder: 0)
+            cubeSides[side.bottom()].setColumn(input: indicedMovedRow[9...11], columnOrder: 2)
+        case .left:
+            movingRow = cubeSides[side.front()].getIndicedColumn(columnOrder: 0, direction: false).joined() + cubeSides[side.upper()].getIndicedColumn(columnOrder: 0, direction: false).joined() + cubeSides[side.back()].getIndicedColumn(columnOrder: 2, direction: true).joined() + cubeSides[side.bottom()].getIndicedColumn(columnOrder: 0, direction: false).joined()
+            indicedMovedRow = doIndiceString(movingCellsLeft(movingRow, 3))
+            cubeSides[side.front()].setColumn(input: indicedMovedRow[0...2], columnOrder: 0)
+            cubeSides[side.upper()].setColumn(input: indicedMovedRow[3...5], columnOrder: 0)
+            cubeSides[side.back()].setColumn(input: indicedMovedRow[6...8], columnOrder: 2)
+            cubeSides[side.bottom()].setColumn(input: indicedMovedRow[9...11], columnOrder: 0)
+        case .upper:
+            let tempRow = cubeSides[side.front()].topLayer
+            cubeSides[side.front()].topLayer = cubeSides[side.left()].topLayer
+            cubeSides[side.left()].topLayer = cubeSides[side.back()].topLayer
+            cubeSides[side.back()].topLayer = cubeSides[side.right()].topLayer
+            cubeSides[side.right()].topLayer = tempRow
+        case .bottom:
+            let tempRow = cubeSides[side.front()].bottomLayer
+            cubeSides[side.front()].bottomLayer = cubeSides[side.left()].bottomLayer
+            cubeSides[side.left()].bottomLayer = cubeSides[side.back()].bottomLayer
+            cubeSides[side.back()].bottomLayer = cubeSides[side.right()].bottomLayer
+            cubeSides[side.right()].bottomLayer = tempRow
         default:
             ""
         }
@@ -328,7 +405,7 @@ func doIndiceString(_ input : String) -> [String] {
 func insertAdditionalCommands(_ input : [String]) -> [String] {
     var item = [String]()
     for i in 0..<input.count {
-        if i == 0 && input[i] == "\'" , i == 0 && input[i] == "2" {
+        if (i == 0) && (input[i] == "\'") || (i == 0) && (input[i] == "2") {
                 print("명령의 첫번째가 ' 또는 2이므로 이를 삭제합니다.")
                 continue
         }
@@ -352,41 +429,51 @@ func doCommands(_ commands : [String], _ cube : inout Cube3D) -> Bool {
         switch commands[i] {
         case "F":
             print(commands[i])
-            cube.turnRight(target: Cube3D.NumberingSides.front)
+            cube.turnClockwise(target: Cube3D.NumberingSides.front)
             cube.print3DCube()
         case "F'":
             print(commands[i])
+            cube.turnCounterClockwise(target: Cube3D.NumberingSides.front)
             cube.print3DCube()
         case "B":
             print(commands[i])
-            cube.turnRight(target: Cube3D.NumberingSides.back)
+            cube.turnClockwise(target: Cube3D.NumberingSides.back)
             cube.print3DCube()
         case "B'":
             print(commands[i])
+            cube.turnCounterClockwise(target: Cube3D.NumberingSides.back)
             cube.print3DCube()
         case "R":
             print(commands[i])
+            cube.turnClockwise(target: Cube3D.NumberingSides.right)
             cube.print3DCube()
         case "R'":
             print(commands[i])
+            cube.turnCounterClockwise(target: Cube3D.NumberingSides.right)
             cube.print3DCube()
         case "L":
             print(commands[i])
+            cube.turnClockwise(target: Cube3D.NumberingSides.left)
             cube.print3DCube()
         case "L'":
             print(commands[i])
+            cube.turnCounterClockwise(target: Cube3D.NumberingSides.left)
             cube.print3DCube()
         case "U":
             print(commands[i])
+            cube.turnClockwise(target: Cube3D.NumberingSides.upper)
             cube.print3DCube()
         case "U'":
             print(commands[i])
+            cube.turnCounterClockwise(target: Cube3D.NumberingSides.upper)
             cube.print3DCube()
         case "D":
             print(commands[i])
+            cube.turnClockwise(target: Cube3D.NumberingSides.bottom)
             cube.print3DCube()
         case "D'":
             print(commands[i])
+            cube.turnCounterClockwise(target: Cube3D.NumberingSides.bottom)
             cube.print3DCube()
         case "Q":
             exitFlag = cube.exitCubing()

@@ -13,9 +13,9 @@ struct Cube2D {
     var bottomLayer : [String]
     
     init(color : String) {
-        topLayer = [color,color,color]
-        middleLayer = [color,color,color]
-        bottomLayer = [color,color,color]
+        topLayer = [String](repeating: color, count: 3)
+        middleLayer = [String](repeating: color, count: 3)
+        bottomLayer = [String](repeating: color, count: 3)
     }
     
     init() {
@@ -93,15 +93,15 @@ let start = Date.init(timeIntervalSinceNow: 0)
 var currentCube = Cube3D.init()
 currentCube.print3DCube()
 
-//while(true){
-//    print(" CUBE> ",terminator :"")
-//    let inputOptionalMessage = readLine()
-//    let inputStringMessage = doOptionalBinding(inputOptionalMessage)
-//    var dicedMessage = doIndiceString(inputStringMessage)
-//    dicedMessage = insertAdditionalCommands(dicedMessage)
-//
-//}
-sleep(1)
+while(true){
+    print(" CUBE> ",terminator :"")
+    let inputOptionalMessage = readLine()
+    let inputStringMessage = doOptionalBinding(inputOptionalMessage)
+    var dicedMessage = doIndiceString(inputStringMessage)
+    dicedMessage = insertAdditionalCommands(dicedMessage)
+    print(dicedMessage)
+
+}
 let end = Date.init(timeIntervalSinceNow: 0)
 print("경과시간: ",calculateIntervalTime(start,end) ?? "")
 
@@ -138,13 +138,16 @@ func doIndiceString(_ input : String) -> [String] {
 func insertAdditionalCommands(_ input : [String]) -> [String] {
     var item = [String]()
     for i in 0..<input.count {
-        if input[i] == "\'", input[i] == "2" {
-            if i == 0 {
+        if i == 0 && input[i] == "\'" , i == 0 && input[i] == "2" {
                 print("명령의 첫번째가 ' 또는 2이므로 이를 삭제합니다.")
                 continue
-            } else {
-                item[item.endIndex-1] = "\(item[item.endIndex-1])'"
-            }
+        }
+        
+        if input[i] == "\'"{
+            item[item.endIndex-1] = "\(item[item.endIndex-1])'"
+        }
+        else if input[i] == "2" {
+            item.append(item[item.endIndex-1])
         }
         else {
         item.append(input[i])

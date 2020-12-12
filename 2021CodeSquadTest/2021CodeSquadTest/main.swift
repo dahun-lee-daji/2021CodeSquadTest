@@ -24,26 +24,28 @@ struct Cube2D {
         bottomLayer = []
     }
     
-    func getTopLayer()-> String {
-        let item = topLayer[0] + " " + topLayer[1] + " " + topLayer[2]
-        return item
+    func getColumn(_ columnOrder : Int)-> String {
+        return topLayer[columnOrder] + " " + middleLayer[columnOrder] + " " + bottomLayer[columnOrder]
     }
     
-    func getMiddleLayer()-> String {
-        let item = middleLayer[0] + " " + middleLayer[1] + " " + middleLayer[2]
-        return item
-    }
-    
-    func getBottomLayer()-> String {
-        let item = bottomLayer[0] + " " + bottomLayer[1] + " " + bottomLayer[2]
-        return item
+    func getRow(_ rowOrder : Int)-> String {
+        switch rowOrder {
+        case 0:
+            return topLayer[0] + " " + topLayer[1] + " " + topLayer[2]
+        case 1:
+            return middleLayer[0] + " " + middleLayer[1] + " " + middleLayer[2]
+        case 2:
+            return bottomLayer[0] + " " + bottomLayer[1] + " " + bottomLayer[2]
+        default:
+            return ""
+        }
     }
     
     func print2DCube(frontSpacing : Int = 0) {
         let spacing = String(repeating: " ", count: frontSpacing)
-            print("\(spacing)\(getTopLayer()) ")
-            print("\(spacing)\(getMiddleLayer()) ")
-        print("\(spacing)\(getBottomLayer()) ", terminator : "\n\n")
+            print("\(spacing)\(getRow(0)) ")
+            print("\(spacing)\(getRow(1)) ")
+        print("\(spacing)\(getRow(2)) ", terminator : "\n\n")
         }
 }
 
@@ -62,6 +64,7 @@ struct Cube3D {
     }
     
     var side : NumberingSides = .front
+    var moves = Int()
     
     init (){
         cubeSides[Cube3D.NumberingSides.upper.rawValue] = .init(color: "B")
@@ -79,9 +82,9 @@ struct Cube3D {
         
         cubeSides[Cube3D.NumberingSides.upper.rawValue].print2DCube(frontSpacing: 15)
         for i in 1...4 {
-            middleSidesTopLayer += "     \(cubeSides[i].getTopLayer())"
-            middleSidesMiddleLayer += "     \(cubeSides[i].getMiddleLayer())"
-            middleSidesBottomLayer += "     \(cubeSides[i].getBottomLayer())"
+            middleSidesTopLayer += "     \(cubeSides[i].getRow(0))"
+            middleSidesMiddleLayer += "     \(cubeSides[i].getRow(1))"
+            middleSidesBottomLayer += "     \(cubeSides[i].getRow(2))"
         }
         print(middleSidesTopLayer, middleSidesMiddleLayer, middleSidesBottomLayer, separator: "\n",terminator:"\n\n")
         cubeSides[Cube3D.NumberingSides.bottom.rawValue].print2DCube(frontSpacing: 15)

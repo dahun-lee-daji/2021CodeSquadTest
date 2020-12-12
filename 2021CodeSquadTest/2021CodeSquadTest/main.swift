@@ -88,6 +88,67 @@ struct Cube3D {
     }
 }
 
-let testCube = Cube3D.init()
-testCube.print3DCube()
+let start = Date.init(timeIntervalSinceNow: 0)
 
+var currentCube = Cube3D.init()
+currentCube.print3DCube()
+
+//while(true){
+//    print(" CUBE> ",terminator :"")
+//    let inputOptionalMessage = readLine()
+//    let inputStringMessage = doOptionalBinding(inputOptionalMessage)
+//    var dicedMessage = doIndiceString(inputStringMessage)
+//    dicedMessage = insertAdditionalCommands(dicedMessage)
+//
+//}
+sleep(1)
+let end = Date.init(timeIntervalSinceNow: 0)
+print("경과시간: ",calculateIntervalTime(start,end) ?? "")
+
+
+func calculateIntervalTime(_ start : Date, _ end : Date) -> String? {
+    let totalSec = end.timeIntervalSince(start)
+    let dateFormat = DateComponentsFormatter()
+    dateFormat.unitsStyle = .positional
+    dateFormat.allowedUnits = [.minute, .second]
+    dateFormat.zeroFormattingBehavior = .pad
+    
+    return dateFormat.string(from: totalSec)
+}
+
+
+func doOptionalBinding(_ input : Optional<String>) -> String {
+    var item = String()
+    if let inputMessage = input?.uppercased() {
+        item = inputMessage
+    } else {
+        print("입력 값 오류")
+    }
+    return item
+}
+
+func doIndiceString(_ input : String) -> [String] {
+    var item = [String]()
+    for i in input.indices {
+        item.append(String(input[i]))
+    }
+    return item
+}
+
+func insertAdditionalCommands(_ input : [String]) -> [String] {
+    var item = [String]()
+    for i in 0..<input.count {
+        if input[i] == "\'", input[i] == "2" {
+            if i == 0 {
+                print("명령의 첫번째가 ' 또는 2이므로 이를 삭제합니다.")
+                continue
+            } else {
+                item[item.endIndex-1] = "\(item[item.endIndex-1])'"
+            }
+        }
+        else {
+        item.append(input[i])
+        }
+    }
+    return item
+}

@@ -7,7 +7,8 @@
 
 import Foundation
 
-struct Cube2D {
+
+struct Cube2D : Equatable {
     var topLayer : [String]
     var middleLayer : [String]
     var bottomLayer : [String]
@@ -364,6 +365,14 @@ struct Cube3D {
         }
         return item
     }
+    
+    func checkComplete() -> Bool {
+        let completeCube = Cube3D.init()
+        if cubeSides == completeCube.cubeSides{
+            return true
+        }
+        return false
+    }
 }
 
 
@@ -376,13 +385,15 @@ while(true){
     let inputStringMessage = doOptionalBinding(inputOptionalMessage)
     var dicedMessage = doIndiceString(inputStringMessage)
     dicedMessage = insertAdditionalCommands(dicedMessage)
+    
     if doCommands(dicedMessage,&currentCube) {
-            break
+        break
         }
+    
+    if (currentCube.checkComplete())&&(currentCube.moves > 0) {
+        currentCube.exitCubing()
+    }
 }
-
-
-
 
 func doOptionalBinding(_ input : Optional<String>) -> String {
     var item = String()
@@ -427,6 +438,11 @@ func doCommands(_ commands : [String], _ cube : inout Cube3D) -> Bool {
     var exitFlag = false
     for i in 0..<commands.count {
         switch commands[i] {
+        case "G":
+            doCommands(makeRandom(), &cube)
+            cube.moves = 0
+            print(commands[i])
+            cube.print3DCube()
         case "F":
             print(commands[i])
             cube.turnClockwise(target: Cube3D.NumberingSides.front)
@@ -482,4 +498,19 @@ func doCommands(_ commands : [String], _ cube : inout Cube3D) -> Bool {
         }
     }
     return exitFlag
+}
+func makeRandom () -> [String] {
+    var item = [String]()
+    for i in 0...19{
+        let num = Int.random(in: 0...5)
+        switch num {
+        case 0: item.append("U")
+        case 1: item.append("B")
+        case 2: item.append("R")
+        case 3: item.append("L")
+        case 4: item.append("F")
+        default: item.append("B")
+        }
+    }
+    return item
 }

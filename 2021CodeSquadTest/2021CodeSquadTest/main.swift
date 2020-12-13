@@ -175,16 +175,16 @@ struct Cube3D {
             cubeSides[target.rawValue].turnRight()
         case .back:
             setLeftMovedRow(target: target)
-            cubeSides[target.rawValue].turnLeft()
+            cubeSides[target.rawValue].turnRight()
         case .upper:
             setRightMovedRow(target: target)
             cubeSides[target.rawValue].turnRight()
         case .bottom:
             setLeftMovedRow(target: target)
-            cubeSides[target.rawValue].turnLeft()
+            cubeSides[target.rawValue].turnRight()
         case .left:
             setLeftMovedRow(target: target)
-            cubeSides[target.rawValue].turnLeft()
+            cubeSides[target.rawValue].turnRight()
         case .right:
             setRightMovedRow(target: target)
             cubeSides[target.rawValue].turnRight()
@@ -201,16 +201,16 @@ struct Cube3D {
             cubeSides[target.rawValue].turnLeft()
         case .back:
             setRightMovedRow(target: target)
-            cubeSides[target.rawValue].turnRight()
+            cubeSides[target.rawValue].turnLeft()
         case .upper:
             setLeftMovedRow(target: target)
             cubeSides[target.rawValue].turnLeft()
         case .bottom:
             setRightMovedRow(target: target)
-            cubeSides[target.rawValue].turnRight()
+            cubeSides[target.rawValue].turnLeft()
         case .left:
             setRightMovedRow(target: target)
-            cubeSides[target.rawValue].turnRight()
+            cubeSides[target.rawValue].turnLeft()
         case .right:
             setLeftMovedRow(target: target)
             cubeSides[target.rawValue].turnLeft()
@@ -391,7 +391,9 @@ while(true){
         }
     
     if (currentCube.checkComplete())&&(currentCube.moves > 0) {
+        print("축하합니다, 큐브를 맞췄습니다!")
         currentCube.exitCubing()
+        break
     }
 }
 

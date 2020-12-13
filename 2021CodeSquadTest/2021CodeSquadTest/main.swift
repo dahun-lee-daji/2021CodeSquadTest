@@ -55,6 +55,7 @@ struct Cube2D : Equatable {
         }
         return doIndiceString(item)
     }
+    
     mutating func setRow(input:ArraySlice<String> ,rowOrder : Int) {
         var item = input
         switch rowOrder {
